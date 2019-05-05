@@ -1,4 +1,6 @@
 test*
+randTest*
 main.cpp
 *.o
 main
+out.txt
