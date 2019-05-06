@@ -1,7 +1,7 @@
 // Coords.h
 
 /*
--- Class: Coords --
+-- Structure: Coords --
     -Coords is a structure of 2-d coordinates to be used in the simulation.
 
     -This is a very general class that consists of an x-coordinate,
