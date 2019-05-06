@@ -17,8 +17,9 @@ testCreature: testCreature.o ${DEPENDENCIES}
 testSingleCreature: testSingleCreature.o ${DEPENDENCIES}
 	${CXX} $^ -o $@ 
 
-randTest: randTest.o
+randTest: randTest.o ${DEPENDENCIES}
 	${CXX} $^ -o $@ 
+
 
 
 clean:
