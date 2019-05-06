@@ -2,23 +2,15 @@
 
 /*
 -- Structure: Coords --
-    -Coords is a structure of 2-d coordinates to be used in the simulation.
-
-    -This is a very general class that consists of an x-coordinate,
-    y-coordinate, and methods for those coordinates
-
-    -Below this point are the methods for Coords
+    -Coords is a structure of 2-d vectors intended to be used in simulations.
 
     -precision is to 1e-6, no garuntee is made for good behavior of coordinates
-    with smaller values
+    with smaller values.
 
 
 Constructors
     -Coords(double x, double y)
-        -create a coordinate at point (x,y)
-
-    Coords();
-        -create a coordinate at point (0,0)
+    Coords()
 
 
 Modifier functions
@@ -27,11 +19,10 @@ Modifier functions
         -example: (3.2, 4.0).move(-1.0, 2.3) -> (2.2, 6.3)
 
     -void move(Coords mover)
-        -move the coordinate by a vector specifid by another coordinate
+        -move the coordinate by a vector mover
 
     -void toUnitVector()
-        -converts the coordinate to a unit vector while preserving original
-        direction
+        -scales self to a unit vector
         -will do nothing if both |x| < 1e-6 & |y| < 1e-6
 
     -void resizeVector(double size)
@@ -45,7 +36,7 @@ Utility Functions
         -returns True if |x| < 1e-6 & |y| < 1e-6, otherwise false
 
     -double getLength()
-        -returns length of vector (x^2 + y^2)^(0.5)
+        -returns length (x^2 + y^2)^(0.5)
 
     -double getDistance(Coords other)
         -returns distance between self and other
@@ -88,10 +79,7 @@ Overloaded operators
 
 Variables
     -double x
-        -x coordinate
-
     -double y
-        -y coordinate
 */
 
 
