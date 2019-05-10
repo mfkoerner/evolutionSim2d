@@ -33,32 +33,80 @@ Setter functions
 
 
 -- Class: Creature (Inherits from Entity) --
-public:
-    //constructors
-    Creature(Coords position, double energy, double speed, std::string name = "");
-    Creature();
+    -Creature classes have position, energy, speed, and name. They move according to
+    the logic in moveToNearestFood(std::deque<Food> &allFood).
 
-    //gettor and settor
-    double getEnergy();
-    void changeEnergy(double difference);
-    void setEnergy(double energy);
+    -Energy is gained when food is reached, and energy is lost each turn as the
+    function E_lost = constant + energy_coefficient * (movement_distance)^2
 
-    double getSpeed();
-    std::string getName();
+    -Energy is limited to the range 0-10, Speed does not have a limit.
 
-    std::string toString();
-    std::string toDataString();
+    -There are some weird features to creatures. As of now, they move a
+    distance of speed * R where R is a uniformly distributed random number
+    between 0 and 1. They currently grab food automatically if they begin
+    their turn within speed of the food, regardless of R for that turn.
 
-    bool isDead();
-    bool isReadyToReproduce();
+    -Name is currently not implemented, but may be used as a tag for user
 
-    //reproduction
-    Creature makeChild();
 
-    //movement
-    void moveInDirection(Coords vector);
-    void moveTowardsPoint(Coords point);
-    void moveToNearestFood(std::deque<Food> &allFood);
+Constructors
+    -Creature(Coords position, double energy, double speed, std::string name = "")
+    -Creature()
+
+getter and setter
+    -double getEnergy()
+        -returns double of energy between 0 and 10
+
+    -void changeEnergy(double difference)
+        -newEnergy = oldEnergy + difference
+        -logic restricts energy from going below 0 or above 10
+
+    -void setEnergy(double energy)
+        -sets energy to value
+        -if < 0, sets to 0; if > 10, sets to 10
+
+    -double getSpeed()
+        -returns speed
+
+    -std::string getName()
+        -returns name
+
+    -std::string toString()
+        -returns in below format
+            Creature: [name]
+            Energy: [energy]
+            Speed: [speed]
+            Entity: x,y   creature
+
+    -std::string toDataString()
+        -returns data in following format
+            "(x,y,energy)"
+
+    -bool isDead()
+        -returns True if energy == 0
+
+    -bool isReadyToReproduce()
+        returns True if energy == 10 (could be later changed)
+
+Reproduction
+    -Creature makeChild()
+        -returns a child creature and subtracts the appropriate birthing energy
+        from current creature
+        -implementaion liable to change depending on simulation
+        -currently divides energy in half and creates identical child in
+        current location
+
+Movement
+    -void moveInDirection(Coords vector)
+        -move distance of R*speed in direction of given vector
+
+    -void moveTowardsPoint(Coords point)
+        -move distance of R*speed towards given point
+
+    -void moveToNearestFood(std::deque<Food> &allFood)
+        -moves towards nearest food using moveTowardsPoint
+        -if food is withing distance of speed (regardless of R chosen), then
+        it will gain the energy of that food and remove it from the food deque
 
 */
 
