@@ -3,7 +3,7 @@
 CXX=clang++
 # CXX=G++
 CVER=c++11
-DEPENDENCIES=tddFuncs.o Coords.o Entity.o Creature.o Arena.o helper_functions.o
+DEPENDENCIES=Coords.o Entity.o Creature.o Arena.o helper_functions.o
 
 main: main.o ${DEPENDENCIES}
 	${CXX} $^ -o $@ 
@@ -17,8 +17,9 @@ testCreature: testCreature.o ${DEPENDENCIES}
 testSingleCreature: testSingleCreature.o ${DEPENDENCIES}
 	${CXX} $^ -o $@ 
 
-randTest: randTest.o
+randTest: randTest.o ${DEPENDENCIES}
 	${CXX} $^ -o $@ 
+
 
 
 clean:

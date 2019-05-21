@@ -1,5 +1,88 @@
 // Coords.h
 
+/*
+-- Structure: Coords --
+    -Coords is a structure of 2-d vectors intended to be used in simulations.
+
+    -precision is to 1e-6, no garuntee is made for good behavior of coordinates
+    with smaller values.
+
+
+Constructors
+    -Coords(double x, double y)
+    Coords()
+
+
+Modifier functions
+    -void move(double x, double y)
+        -move the coordinate by a vector (x,y)
+        -example: (3.2, 4.0).move(-1.0, 2.3) -> (2.2, 6.3)
+
+    -void move(Coords mover)
+        -move the coordinate by a vector mover
+
+    -void toUnitVector()
+        -scales self to a unit vector
+        -will do nothing if both |x| < 1e-6 & |y| < 1e-6
+
+    -void resizeVector(double size)
+        -converts the coordinate to a vector of length (size) while preserving
+        original direction
+        -will multiply original vector by size if both |x| < 1e-6 & |y| < 1e-6
+
+
+Utility Functions
+    -bool isZero()
+        -returns True if |x| < 1e-6 & |y| < 1e-6, otherwise false
+
+    -double getLength()
+        -returns length (x^2 + y^2)^(0.5)
+
+    -double getDistance(Coords other)
+        -returns distance between self and other
+
+    -std::string toString()
+        -returns a string of format "x,y"
+        -no spaces, newlines, or () included
+        -printed to 1e-6 precision because of to_string() c++ function
+
+    -void print()
+        -prints the string from toString()
+
+
+Overloaded operators
+    "=="
+        -returns true if |x| < 1e-6 & |y| < 1e-6 for the difference of
+        the operands
+
+    "=" (assignment)
+        -Currently using default assignment
+        -Should provide a deep copy since Coords is mad of 2 doubles on stack
+
+    "+"
+        -Input: Coords + Coords
+        -returns (x1+x2, y1+y2)
+
+    "-"
+        -Input: Coords - Coords
+        -returns (x1-x2, y1-y2)
+
+    "*"
+        Input: Coords * double
+        - (x,y) * z = (x*z, y*z)
+        - does not work as double * Coords
+
+    "/"
+        Input: Coords / double
+        -(x,y) / z = (x/z, y/z)
+
+
+Variables
+    -double x
+    -double y
+*/
+
+
 #ifndef COORDS_H
 #define COORDS_H
 
