@@ -22,3 +22,14 @@ Coords getRandomCoords(double min, double max) {
 Coords getRandomCoords() {
     return getRandomCoords(0., 1.);
 }
+
+double getRandomAngle(double minAngle = 0., double maxAngle = 6.28318530) {
+    return getRandomFloat(minAngle, maxAngle);
+}
+
+Coords getRandomUnitVector() {
+    Coords outVector(0., 1.);
+    float randAngle = getRandomAngle();
+    outVector.rotate(randAngle);
+    return outVector;
+}
