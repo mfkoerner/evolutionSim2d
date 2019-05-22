@@ -30,6 +30,9 @@ Modifier functions
         original direction
         -will multiply original vector by size if both |x| < 1e-6 & |y| < 1e-6
 
+    -void rotate(double angle)
+        -rotates the coordinate counter-clockwise by the specified angle in rad
+
 
 Utility Functions
     -bool isZero()
@@ -129,6 +132,7 @@ struct Coords {
     void move(Coords mover);
     void toUnitVector();
     void resizeVector(double size);
+    void rotate(double angle);
 
 
     // getters

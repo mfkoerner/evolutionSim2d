@@ -44,6 +44,13 @@ void Coords::resizeVector(double size) {
     *this = *this * size;
 }
 
+void Coords::rotate(double angle) {
+    double newX = x*cos(angle) - y*sin(angle);
+    double newY = x*sin(angle) + y*cos(angle);
+    x = newX;
+    y = newY;
+}
+
 bool Coords::isZero() {
     Coords zeroCoord(0., 0.);
     return *this == zeroCoord;
