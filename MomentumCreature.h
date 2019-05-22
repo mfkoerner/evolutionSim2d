@@ -1,50 +1,19 @@
 // MomentumCreature.h
 
 /*
--- Class: Food (Inherits from Entity) --
-    - Food classes have a position and energy, the energy is how much energy
-    a creature gains from eating the food
 
-    - As of now, all food classes have an image of "food"
-
-
-Consructors
-    -Food(Coords location, double energy, std::string name = "")
-    -Food()
-
-
-Getter functions
-    -double getEnergy()
-    -std::string getName()
-
-Setter functions
-    -std::string toString()
-        -Output format below
-            Food: ${name}
-            Energy: ${energy}
-            Entity: ${string from entity definition}
-
-    -std::string toDataString()
-        -outputs a convenient string for plotting purposes
-        -liable to change, curretnly of following format
-            xPos,yPos,energy
-        -floats are to 1e-6 precision because of c++ to_string() function
-
-
-
--- Class: MomentumCreature (Inherits from Entity) --
-    -MomentumCreature classes have position, energy, speed, and name. They move according to
-    the logic in moveToNearestFood(std::deque<Food> &allFood).
+-- Class: MomentumCreature (Inherits from Creature) --
+    -MomentumCreature classes have position, energy, speed, and name.
+    They move according to the logic in 
+    moveToNearestFood(std::deque<Food> &allFood).
 
     -Energy is gained when food is reached, and energy is lost each turn as the
     function E_lost = constant + energy_coefficient * (movement_distance)^2
 
     -Energy is limited to the range 0-10, Speed does not have a limit.
 
-    -There are some weird features to creatures. As of now, they move a
-    distance of speed * R where R is a uniformly distributed random number
-    between 0 and 1. They currently grab food automatically if they begin
-    their turn within speed of the food, regardless of R for that turn.
+    -Momentum creatues are limited to an overall momentum change of 1 unit
+    this means that the angle may only change by 1 unit / speed in any turn
 
     -Name is currently not implemented, but may be used as a tag for user
 
@@ -112,8 +81,8 @@ Movement
 
 
 
-#ifndef CREATURE_H
-#define CREATURE_H
+#ifndef MOMENTUM_CREATURE_H
+#define MOMENTUM_CREATURE_H
 
 #include "Entity.h"
 #include <iostream>
@@ -181,4 +150,4 @@ private:
 
 
 
-#endif //CREATURE_H
+#endif //MOMENTUM_CREATURE_H
