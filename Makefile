@@ -20,7 +20,11 @@ testSingleCreature: testSingleCreature.o ${DEPENDENCIES}
 randTest: randTest.o ${DEPENDENCIES}
 	${CXX} $^ -o $@ 
 
+testCoordsRotate: testCoordsRotate.o ${DEPENDENCIES}
+	${CXX} $^ -o $@ 
+
 
 
 clean:
-	/bin/rm -f *.o main testCoords testCreature testSingleCreature randTest
+	/bin/rm -f *.o main testCoords testCreature testSingleCreature\
+randTest testCoordsRotate
