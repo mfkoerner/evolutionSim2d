@@ -67,6 +67,7 @@ void NearestFoodCreature::advance(deque<Food> &allFood) {
 
 
 
+// ******** MomentumCreature ******** //
 
 
 
