@@ -14,21 +14,21 @@ Constructors
         -declare a SquareArena of size 20 by 20, with outFilePath of "out.txt"
 
     -SquareArena(SquareArena &orig)
-        -copies one SquareArena to another, not as well bug tested
+        -not created and don't do this
 
     -~SquareArena()
         -closes the ofstring object to outFile
 
     -SquareArena & operator=(SquareArena &rhs)
-        -assignment is not recommended for SquareArena, but it may work
+        -not created and don't do this
 
 
 Getter functions
     -std::deque<Food> getAllFood()
         -returns deque of food objects in arena
 
-    -std::vector<Creature> getAllCreatures()
-        -returns vector of creature objects in arena
+    -std::vector< std::unique_ptr<Creature> > getAllCreatures()
+        -we don't do this as of now, unimplemented
 
     -std::string getOutFilePath()
         -returns path to outFile
@@ -40,7 +40,7 @@ Getter functions
         -returns ySize
 
     -std::string toString()
-        -currently unimplemented
+        -currently unimplemented, returns "STUB"
 
     -std::string toDataString()
         -returns data string of the following form:
@@ -91,19 +91,20 @@ Main function
 #include <deque>
 #include <string>
 #include <fstream>
+#include <memory>
 
 class SquareArena {
 public:
     //constructors
     SquareArena(float xSize, float ySize, std::string outFilePath);
     SquareArena();
-    SquareArena(SquareArena &orig);
+    // SquareArena(SquareArena &orig);
     ~SquareArena();
-    SquareArena & operator=(SquareArena &rhs);
+    // SquareArena & operator=(SquareArena &rhs);
 
     // getter functions
     std::deque<Food> getAllFood();
-    std::vector<Creature> getAllCreatures();
+    std::vector< std::unique_ptr<Creature> > getAllCreatures();
     std::string getOutFilePath();
     float getXSize();
     float getYSize();
@@ -115,7 +116,9 @@ public:
     bool isAnyFood();
 
     // modify creatures and food
-    void addCreature(Creature newCreature);
+    void addCreature(Creature & newCreature);
+    void addCreatures(
+        std::vector< std::unique_ptr<Creature> > & newCreatures);
     void addFood(Food newFood);
     void removeCreatureAtIndex(int loc);
     void spawnFood(double energy);
@@ -136,7 +139,7 @@ private:
     std::ofstream outFile;
     std::string outFilePath;
     std::deque<Food> allFood;
-    std::vector<Creature> allCreatures;
+    std::vector< std::unique_ptr<Creature> > allCreatures;
 };
 
 

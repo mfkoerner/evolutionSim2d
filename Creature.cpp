@@ -64,22 +64,28 @@ bool Creature::isReadyToReproduce() {
     return energy == 10.;
 }
 
-//reproduction
-
-Creature Creature::makeChild() {
-    setEnergy(getEnergy()/2);
-    return Creature(getPosition(), getEnergy(), getSpeed(), getName());
-
-}
-
-
 //movement
 
 void Creature::moveInDirection(Coords vector) {
-    double randomFactor = getRandomFloat(0., 1.);
-    vector.resizeVector(getSpeed() * randomFactor);
-    advance(vector);
+    vector.resizeVector(getSpeed());
+    moveAndDecay(vector);
 
+}
+
+void Creature::moveInDirectionReduced(Coords vector, float R) {
+    if (R > 1.) {
+        R = 1.;
+    }
+    vector.resizeVector(getSpeed()*R);
+    moveAndDecay(vector);
+
+}
+
+void Creature::moveNotAtSpeed(Coords vector) {
+    if (vector.getLength() > getSpeed()) {
+        moveInDirection(vector);
+    }
+    moveAndDecay(vector);
 }
 
 void Creature::moveTowardsPoint(Coords point) {
@@ -87,26 +93,31 @@ void Creature::moveTowardsPoint(Coords point) {
     moveInDirection(velocity);
 }
 
-void Creature::moveToNearestFood(deque<Food> &allFood) {
-    if (allFood.size() == 0) {
-        moveInDirection(Coords(0., 0.));
-    } else {
-        deque <Food> :: iterator nearest = getNearestFoodIt(allFood);
-        double distance=nearest->getPosition().getDistance(this->getPosition());
-        // cout << "distance is " << distance << endl; //DEBUG LINE
-        double energy_increase = 0;
-        string theName = "";
-        if (distance <= speed) {
-            energy_increase = nearest->getEnergy();
-            theName = nearest->getName();
-            allFood.erase(nearest, next(nearest));
-            // cout << "ate food " << theName << endl; //DEBUG LINE
-        }
-        moveTowardsPoint(nearest->getPosition());
-        changeEnergy(energy_increase);
-    }
-
+void Creature::moveTowardsPointReduced(Coords point, float R) {
+    Coords velocity = point - getPosition();
+    moveInDirectionReduced(velocity, R);
 }
+
+// void Creature::advance(deque<Food> &allFood) {
+//     if (allFood.size() == 0) {
+//         moveInDirection(Coords(0., 0.));
+//     } else {
+//         deque <Food> :: iterator nearest = getNearestFoodIt(allFood);
+//         double distance=nearest->getPosition().getDistance(this->getPosition());
+//         // cout << "distance is " << distance << endl; //DEBUG LINE
+//         double energy_increase = 0;
+//         string theName = "";
+//         if (distance <= speed) {
+//             energy_increase = nearest->getEnergy();
+//             theName = nearest->getName();
+//             allFood.erase(nearest, next(nearest));
+//             // cout << "ate food " << theName << endl; //DEBUG LINE
+//         }
+//         moveTowardsPoint(nearest->getPosition());
+//         changeEnergy(energy_increase);
+//     }
+
+// }
 
 
 
@@ -114,7 +125,7 @@ void Creature::moveToNearestFood(deque<Food> &allFood) {
 
 //Private functions
 
-void Creature::advance(Coords velocity) {
+void Creature::moveAndDecay(Coords velocity) {
     move(velocity);
     double modifyer;
     // cout << to_string(velocity.getLength()*10000) << endl; //DEBUG LINE

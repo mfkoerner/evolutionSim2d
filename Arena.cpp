@@ -27,15 +27,15 @@ string stringOfData(deque<Food> foodList) {
     }
     return output;
 }
-string stringOfData(vector<Creature> creatureVec) {
+string stringOfData(std::vector< std::unique_ptr<Creature> > & creatureVec) {
     if (creatureVec.size() == 0) {
     return "";
 }
-    string output = creatureVec.begin()->toDataString();
-    vector<Creature> :: iterator it;
+    string output = (*(creatureVec.begin()))->toDataString();
+    std::vector< std::unique_ptr<Creature> > :: iterator it;
     for (it = next(creatureVec.begin()); it != creatureVec.end(); it++) {
         output += " ";
-        output += it->toDataString();
+        output += (*it)->toDataString();
     }
     return output;
 }
@@ -66,40 +66,43 @@ SquareArena::SquareArena() {
     writeHeader();
 }
 
-SquareArena::SquareArena(SquareArena &orig) {
-    this->xMin = -orig.getXSize()/2;
-    this->xMax = orig.getXSize()/2;
-    this->yMin = -orig.getYSize()/2;
-    this->yMax = orig.getYSize()/2;
-    this->outFilePath = orig.getOutFilePath();
-    this->outFile.open(this->outFilePath);
-    this->allFood = orig.getAllFood();
-    this->allCreatures = orig.getAllCreatures();
-    writeHeader();
-}
+// SquareArena::SquareArena(SquareArena &orig) {
+//     this->xMin = -orig.getXSize()/2;
+//     this->xMax = orig.getXSize()/2;
+//     this->yMin = -orig.getYSize()/2;
+//     this->yMax = orig.getYSize()/2;
+//     this->outFilePath = orig.getOutFilePath();
+//     this->outFile.open(this->outFilePath);
+//     this->allFood = orig.getAllFood();
+//     for (auto it = orig.allCreatures.begin(); it != orig.allCreatures.end(); i++) {
+//         //copy each element
+//     }
+//     this->allCreatures = orig.getAllCreatures();
+//     writeHeader();
+// }
 
 SquareArena::~SquareArena() {
     this->outFile.close();
 }
 
-SquareArena & SquareArena::operator=(SquareArena &rhs) {
-    cout << "Using assignment with Arena objects is not recommended\n";
-    this->~SquareArena();
-    SquareArena(rhs.getXSize(), rhs.getYSize(), rhs.getOutFilePath());
-    this->allFood = rhs.getAllFood();
-    this->allCreatures = rhs.getAllCreatures();
+// SquareArena & SquareArena::operator=(SquareArena &rhs) {
+//     cout << "Using assignment with Arena objects is not recommended\n";
+//     this->~SquareArena();
+//     SquareArena(rhs.getXSize(), rhs.getYSize(), rhs.getOutFilePath());
+//     this->allFood = rhs.getAllFood();
+//     this->allCreatures = rhs.getAllCreatures();
 
-    return *this;
-}
+//     return *this;
+// }
 
 // getter functions
 deque<Food> SquareArena::getAllFood() {
     return allFood;
 }
 
-vector<Creature> SquareArena::getAllCreatures() {
-    return allCreatures;
-}
+// std::vector< std::unique_ptr<Creature> > SquareArena::getAllCreatures() {
+//     return allCreatures;
+// }
 
 
 string SquareArena::getOutFilePath() {
@@ -135,9 +138,17 @@ bool SquareArena::isAnyFood() {
 
 
 // modify creatures and food
-void SquareArena::addCreature(Creature newCreature) {
-    allCreatures.push_back(newCreature);
+void SquareArena::addCreature(Creature & newCreature) {
+    allCreatures.emplace_back(newCreature.clone());
 }
+void SquareArena::addCreatures(
+    vector< unique_ptr<Creature> > & newCreatures) {
+    vector< unique_ptr<Creature> > :: iterator it;
+    for (it = newCreatures.begin(); it != newCreatures.end(); it++) {
+        addCreature((**it));
+    }
+}
+
 void SquareArena::addFood(Food newFood) {
     allFood.push_back(newFood);
 }
@@ -161,15 +172,14 @@ void SquareArena::advance() {
     int loc = 0;
     while (loc < allCreatures.size()) {
         // cout << "loc = " << loc << endl; //DEBUG LINE
-        // allCreatures[loc] = allCreatures.at(loc);
-        if (allCreatures[loc].isReadyToReproduce()) {
-            Creature child = allCreatures[loc].makeChild();
-            addCreature(child);
+        if (allCreatures[loc]->isReadyToReproduce()) {
+            auto children = allCreatures[loc]->makeChildren();
+            addCreatures(children);
         }
-        if (allCreatures[loc].isDead()) {
+        if (allCreatures[loc]->isDead()) {
             removeCreatureAtIndex(loc);
         } else {
-            allCreatures[loc].moveToNearestFood(allFood);
+            allCreatures[loc]->advance(allFood);
             loc++;
         }
     }
