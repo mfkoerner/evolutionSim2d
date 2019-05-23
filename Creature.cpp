@@ -76,9 +76,8 @@ Creature Creature::makeChild() {
 //movement
 
 void Creature::moveInDirection(Coords vector) {
-    double randomFactor = getRandomFloat(0., 1.);
-    vector.resizeVector(getSpeed() * randomFactor);
-    advance(vector);
+    vector.resizeVector(getSpeed());
+    moveAndDecay(vector);
 
 }
 
@@ -87,7 +86,7 @@ void Creature::moveTowardsPoint(Coords point) {
     moveInDirection(velocity);
 }
 
-void Creature::moveToNearestFood(deque<Food> &allFood) {
+void Creature::advance(deque<Food> &allFood) {
     if (allFood.size() == 0) {
         moveInDirection(Coords(0., 0.));
     } else {
@@ -114,7 +113,7 @@ void Creature::moveToNearestFood(deque<Food> &allFood) {
 
 //Private functions
 
-void Creature::advance(Coords velocity) {
+void Creature::moveAndDecay(Coords velocity) {
     move(velocity);
     double modifyer;
     // cout << to_string(velocity.getLength()*10000) << endl; //DEBUG LINE

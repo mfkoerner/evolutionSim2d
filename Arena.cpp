@@ -169,7 +169,7 @@ void SquareArena::advance() {
         if (allCreatures[loc].isDead()) {
             removeCreatureAtIndex(loc);
         } else {
-            allCreatures[loc].moveToNearestFood(allFood);
+            allCreatures[loc].advance(allFood);
             loc++;
         }
     }

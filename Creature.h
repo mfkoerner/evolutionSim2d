@@ -34,17 +34,15 @@ Setter functions
 
 -- Class: Creature (Inherits from Entity) --
     -Creature classes have position, energy, speed, and name. They move according to
-    the logic in moveToNearestFood(std::deque<Food> &allFood).
+    the logic in advance(std::deque<Food> &allFood).
 
     -Energy is gained when food is reached, and energy is lost each turn as the
     function E_lost = constant + energy_coefficient * (movement_distance)^2
 
     -Energy is limited to the range 0-10, Speed does not have a limit.
 
-    -There are some weird features to creatures. As of now, they move a
-    distance of speed * R where R is a uniformly distributed random number
-    between 0 and 1. They currently grab food automatically if they begin
-    their turn within speed of the food, regardless of R for that turn.
+    -There are some weird features to creatures. They currently grab food automatically if they begin
+    their turn within speed of the food, regardless of where they actually moved.
 
     -Name is currently not implemented, but may be used as a tag for user
 
@@ -98,14 +96,14 @@ Reproduction
 
 Movement
     -void moveInDirection(Coords vector)
-        -move distance of R*speed in direction of given vector
+        -move distance of speed in direction of given vector
 
     -void moveTowardsPoint(Coords point)
-        -move distance of R*speed towards given point
+        -move distance of speed towards given point
 
-    -void moveToNearestFood(std::deque<Food> &allFood)
+    -void advance(std::deque<Food> &allFood)
         -moves towards nearest food using moveTowardsPoint
-        -if food is withing distance of speed (regardless of R chosen), then
+        -if food is withing distance of speed, then
         it will gain the energy of that food and remove it from the food deque
 
 */
@@ -163,12 +161,12 @@ public:
     //movement
     void moveInDirection(Coords vector);
     void moveTowardsPoint(Coords point);
-    void moveToNearestFood(std::deque<Food> &allFood);
+    void advance(std::deque<Food> &allFood);
 
 
 
 private:
-    void advance(Coords velocity);
+    void moveAndDecay(Coords velocity);
     std::deque<Food>::iterator getNearestFoodIt(std::deque<Food> &allFood);
     void checkEnergy();
     void checkSpeed();
