@@ -65,6 +65,30 @@ public:
 
 };
 
+class MomentumCreature: public Creature {
+public:
+    //constructors
+    MomentumCreature(Coords position = Coords(0., 1.), 
+        double energy = 10., 
+        double speed = 1.,
+        Coords lastVelocity = Coords(0., 1.), 
+        std::string name = "");
+
+    //getter
+    Coords getLastVelocity();
+
+    //overrides of virtual functions
+    std::unique_ptr<Creature> clone();
+    std::vector< std::unique_ptr<Creature> > makeChildren();
+    void advance(std::deque<Food> &allFood);
+
+private:
+    void updateLastVelocity(Coords velocity);
+    void moveByMomentumTowardsPoint(Coords point);
+    Coords lastVelocity;
+
+}
+
 
 
 #endif //DERIVED_CREATURES_1_H

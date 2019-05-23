@@ -135,6 +135,7 @@ struct Coords {
     bool isZero();
     double getLength();
     double getDistance(Coords other);
+    double getAngle();
 
 
     // printer
@@ -146,5 +147,6 @@ struct Coords {
     double y;
 };
 
+double dotProduct(Coords a, Coords b);
 
 #endif //COORDS_H

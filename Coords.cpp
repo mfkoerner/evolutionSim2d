@@ -58,6 +58,10 @@ double Coords::getDistance(Coords other) {
     return temp.getLength();
 }
 
+double Coords::getAngle() {
+    return 1.0 //STUB
+}
+
 string Coords::toString() {
     string output;
     output = to_string(x) + "," + to_string(y);
@@ -68,3 +72,6 @@ void Coords::print() {
     cout << toString() << endl;
 }
 
+double dotProduct(Coords a, Coords b) {
+    return (a.x*b.x + a.y*b.y);
+}
