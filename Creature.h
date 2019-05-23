@@ -95,16 +95,30 @@ Reproduction
         current location
 
 Movement
+
     -void moveInDirection(Coords vector)
         -move distance of speed in direction of given vector
+
+    -void moveInDirectionReduced(Coords vector, float R)
+        -move distance of speed * R (max R = 1) in direction of vector
+        -if R>1, R is replaced with 1. (functions like moveInDirection)
+
+    -void moveNotAtSpeed(Coords vector)
+        -moves by amount of given vector
+        -if len(vector) > speed, moves speed in direction of vector
 
     -void moveTowardsPoint(Coords point)
         -move distance of speed towards given point
 
+    -void moveTowardsPointReduced(Coords point, float R)
+        -moves distance of speed * R (max R = 1) towards point
+        -if R > 1, replaces R with 1 and acts like moveTowardsPoint
+
     -void advance(std::deque<Food> &allFood)
-        -moves towards nearest food using moveTowardsPoint
-        -if food is withing distance of speed, then
-        it will gain the energy of that food and remove it from the food deque
+        -abstract function to be implemented by derived classes
+        -needs to be able to eat food if within range
+        -needs to move the creature is some way in order to get food
+        -needs to be implemented in a way that costs energy
 
 */
 
@@ -117,6 +131,7 @@ Movement
 #include <iostream>
 #include <deque>
 #include <string>
+#include <memory>
 
 class Food : public Entity {
 public:
@@ -140,6 +155,7 @@ public:
     //constructors
     Creature(Coords position, double energy, double speed, std::string name = "");
     Creature();
+    virtual std::unique_ptr<Creature> clone() =0;
 
     //gettor and settor
     double getEnergy();
@@ -156,18 +172,21 @@ public:
     bool isReadyToReproduce();
 
     //reproduction
-    Creature makeChild();
+    virtual std::vector< std::unique_ptr<Creature> > makeChildren() =0;
 
     //movement
     void moveInDirection(Coords vector);
+    void moveInDirectionReduced(Coords vector, float R);
+    void moveNotAtSpeed(Coords vector);
     void moveTowardsPoint(Coords point);
-    void advance(std::deque<Food> &allFood);
+    void moveTowardsPointReduced(Coords point, float R);
+    virtual void advance(std::deque<Food> &allFood) =0;
 
-
+protected:
+    std::deque<Food>::iterator getNearestFoodIt(std::deque<Food> &allFood);
 
 private:
     void moveAndDecay(Coords velocity);
-    std::deque<Food>::iterator getNearestFoodIt(std::deque<Food> &allFood);
     void checkEnergy();
     void checkSpeed();
     double energy; //from 0 - 10

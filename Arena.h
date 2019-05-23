@@ -117,6 +117,8 @@ public:
 
     // modify creatures and food
     void addCreature(Creature & newCreature);
+    void addCreatures(
+        std::vector< std::unique_ptr<Creature> > & newCreatures);
     void addFood(Food newFood);
     void removeCreatureAtIndex(int loc);
     void spawnFood(double energy);

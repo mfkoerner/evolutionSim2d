@@ -139,8 +139,16 @@ bool SquareArena::isAnyFood() {
 
 // modify creatures and food
 void SquareArena::addCreature(Creature & newCreature) {
-    allCreatures.emplace_back(unique_ptr<Creature> ( new Creature(newCreature) ) );
+    allCreatures.emplace_back(newCreature.clone());
 }
+void SquareArena::addCreatures(
+    vector< unique_ptr<Creature> > & newCreatures) {
+    vector< unique_ptr<Creature> > :: iterator it;
+    for (it = newCreatures.begin(); it != newCreatures.end(); it++) {
+        addCreature((**it));
+    }
+}
+
 void SquareArena::addFood(Food newFood) {
     allFood.push_back(newFood);
 }
@@ -165,8 +173,8 @@ void SquareArena::advance() {
     while (loc < allCreatures.size()) {
         // cout << "loc = " << loc << endl; //DEBUG LINE
         if (allCreatures[loc]->isReadyToReproduce()) {
-            Creature child = allCreatures[loc]->makeChild();
-            addCreature(child);
+            auto children = allCreatures[loc]->makeChildren();
+            addCreatures(children);
         }
         if (allCreatures[loc]->isDead()) {
             removeCreatureAtIndex(loc);
