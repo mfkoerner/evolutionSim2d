@@ -3,6 +3,7 @@
 CXX=clang++
 # CXX=G++
 CVER=c++11
+CXXFLAGS=-std=c++11
 DEPENDENCIES=Coords.o Entity.o Creature.o Arena.o helper_functions.o
 
 main: main.o ${DEPENDENCIES}
@@ -24,3 +25,4 @@ randTest: randTest.o ${DEPENDENCIES}
 
 clean:
 	/bin/rm -f *.o main testCoords testCreature testSingleCreature randTest
+	/bin/rm -rf main.dSYM
