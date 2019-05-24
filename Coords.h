@@ -136,6 +136,7 @@ struct Coords {
     double getLength();
     double getDistance(Coords other);
     double getAngle();
+    double getAngleBetween(Coords other);
 
 
     // printer
@@ -148,5 +149,6 @@ struct Coords {
 };
 
 double dotProduct(Coords a, Coords b);
+double reduceAngle(double theta);
 
 #endif //COORDS_H

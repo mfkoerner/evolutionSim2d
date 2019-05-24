@@ -87,7 +87,7 @@ private:
     void moveByMomentumTowardsPoint(Coords point);
     Coords lastVelocity;
 
-}
+};
 
 
 

@@ -8,6 +8,8 @@
 
 using namespace std;
 
+const float PI = 3.141592;
+
 Coords::Coords(double x, double y) {
     this->x = x;
     this->y = y;
@@ -59,7 +61,35 @@ double Coords::getDistance(Coords other) {
 }
 
 double Coords::getAngle() {
-    return 1.0 //STUB
+    if (x == 0. && y == 0.) {
+        return 0.;
+    } else if ( x == 0.) {
+        if (y > 0.) {
+            return PI/2;
+        } else {
+            return 3*PI/2;
+        }
+    } else if ( y == 0.) {
+        if (x > 0.) {
+            return 0.;
+        } else {
+            return PI;
+        }
+    } else {
+        double angle = acos(x/getLength());
+        if (y > 0) {
+            return angle;
+        } else {
+            return 2*PI - angle;
+        }
+    }
+}
+
+double Coords::getAngleBetween(Coords other) {
+    angle1 = getAngle();
+    angle2 = other.getAngle();
+    angleBetween = reduceAngle(angle2 - angle1);
+    return angleBetween;
 }
 
 string Coords::toString() {
@@ -74,4 +104,17 @@ void Coords::print() {
 
 double dotProduct(Coords a, Coords b) {
     return (a.x*b.x + a.y*b.y);
+}
+
+double reduceAngle(double theta) {
+    if (theta > PI) {
+        while (theta > 2*PI) {
+            theta -= 2*PI;
+        }
+    } else if (theta < -1*PI) {
+        while (theta < -1*PI) {
+            theta += 2*PI;
+        }
+    }
+    return theta;
 }

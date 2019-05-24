@@ -19,7 +19,7 @@ testCreature: testCreature.o ${DEPENDENCIES}
 testSingleCreature: testSingleCreature.o ${DEPENDENCIES}
 	${CXX} $^ -o $@ 
 
-randTest: randTest.o ${DEPENDENCIES}
+randTest: randTest.o Coords.o
 	${CXX} $^ -o $@ 
 
 
