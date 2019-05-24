@@ -93,9 +93,17 @@ double Coords::getAngle() {
 }
 
 double Coords::getAngleBetween(Coords other) {
+    //DEBUG LINES
+    cout << "this  " << toString() << endl;
+    cout << "other " << other.toString() << endl;
     double angle1 = getAngle();
     double angle2 = other.getAngle();
+    //DEBUG LINES
+    cout << "thisAngle  " << angle1 << endl;
+    cout << "otherAngle " << angle2 << endl;
     double angleBetween = reduceAngle(angle2 - angle1);
+    //DEBUG LINE
+    cout << "angle between " << angleBetween << endl;
     return angleBetween;
 }
 

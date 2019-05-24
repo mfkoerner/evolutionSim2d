@@ -124,7 +124,9 @@ void MomentumCreature::updateLastVelocity(Coords velocity) {
 }
 
 void MomentumCreature::moveByMomentumTowardsPoint(Coords point) {
-    double turnAngle = this->getPosition().getAngleBetween(point);
+    cout << "\n\n\n"; //DEBUG LINE
+    double turnAngle = this->getLastVelocity(
+        ).getAngleBetween(point - getPosition());
     double maxAngle = MAX_MOM_CHANGE / this->getSpeed();
     double rotateAngle = 0.;
     if (turnAngle > maxAngle) {
@@ -134,8 +136,19 @@ void MomentumCreature::moveByMomentumTowardsPoint(Coords point) {
     } else {
         rotateAngle = turnAngle;
     }
+    // DEBUG LINES
+    cout << "position " << this->getPosition().toString() << endl;
+    cout << "nearest food " << point.toString() << endl;
+    Coords difference = point - this->getPosition();
+    cout << "difference " << difference.toString() << endl;
     Coords nextVelocity = this->getLastVelocity();
+    // DEBUG LINES
+    cout << "last velocity " << nextVelocity.toString() << endl;
+    cout << "turn angle " << turnAngle << endl;
+    cout << "rotateAngle " << rotateAngle << endl;
     nextVelocity.rotate(rotateAngle);
+    // DEBUG LINE
+    cout << "new velocity " << nextVelocity.toString() << endl;
     updateLastVelocity(nextVelocity);
     moveInDirection(nextVelocity);
 }
