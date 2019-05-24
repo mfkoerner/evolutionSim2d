@@ -108,7 +108,7 @@ double dotProduct(Coords a, Coords b) {
 
 double reduceAngle(double theta) {
     if (theta > PI) {
-        while (theta > 2*PI) {
+        while (theta > PI) {
             theta -= 2*PI;
         }
     } else if (theta < -1*PI) {
