@@ -86,9 +86,9 @@ double Coords::getAngle() {
 }
 
 double Coords::getAngleBetween(Coords other) {
-    angle1 = getAngle();
-    angle2 = other.getAngle();
-    angleBetween = reduceAngle(angle2 - angle1);
+    double angle1 = getAngle();
+    double angle2 = other.getAngle();
+    double angleBetween = reduceAngle(angle2 - angle1);
     return angleBetween;
 }
 
