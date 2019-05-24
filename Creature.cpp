@@ -11,8 +11,8 @@
 
 using namespace std;
 
-const double constTerm = 0.1;
-const double speedCoefficient = 0.4;
+const double constTerm = 0.01;
+const double speedCoefficient = 0.04;
 
 
 Creature::Creature(Coords position, double energy, double speed, string name) 

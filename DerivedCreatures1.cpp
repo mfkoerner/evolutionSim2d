@@ -14,6 +14,7 @@
 
 using namespace std;
 
+const double MAX_MOM_CHANGE = 0.2;
 
 // ******** NearestFoodCreature ******** //
 
@@ -77,7 +78,7 @@ MomentumCreature::MomentumCreature(Coords position, double energy,
         this->lastVelocity = lastVelocity;
 }
 
-Coords getLastVelocity() {
+Coords MomentumCreature::getLastVelocity() {
     return lastVelocity;
 }
 
@@ -90,7 +91,7 @@ vector< unique_ptr<Creature> > MomentumCreature::makeChildren() {
     vector< unique_ptr<Creature> > children;
     children.emplace_back(unique_ptr<Creature> (
         new MomentumCreature(getPosition(), getEnergy(), getSpeed(),
-            -1*getLastVelocity(), getName())
+            getLastVelocity()*(-1.), getName())
     ));
     return children;
 }
@@ -103,9 +104,9 @@ void MomentumCreature::advance(deque<Food> & allFood) {
         double distance=nearest->getPosition().getDistance(this->getPosition());
         Coords difference = nearest->getPosition() - this->getPosition();
         // 1.0 means same direction, -1.0 means opposite direction
-        double sameDirection = dotProduct(
-            difference, this->getLastVelocity()) / ( 
-            this->getLastVelocity().getLength() * difference.getLength());
+        // double sameDirection = dotProduct(
+        //     difference, this->getLastVelocity()) / ( 
+        //     this->getLastVelocity().getLength() * difference.getLength());
         double energy_increase = 0;
         if (distance <= getSpeed()) {
             energy_increase = nearest->getEnergy();
@@ -118,11 +119,26 @@ void MomentumCreature::advance(deque<Food> & allFood) {
 
 }
 
-void updateLastVelocity(Coords velocity) {
+void MomentumCreature::updateLastVelocity(Coords velocity) {
     lastVelocity = velocity;
 }
 
-void moveByMomentumTowardsPoint()
+void MomentumCreature::moveByMomentumTowardsPoint(Coords point) {
+    double turnAngle = this->getPosition().getAngleBetween(point);
+    double maxAngle = MAX_MOM_CHANGE / this->getSpeed();
+    double rotateAngle = 0.;
+    if (turnAngle > maxAngle) {
+        rotateAngle = maxAngle;
+    } else if (turnAngle < -maxAngle) {
+        rotateAngle = -maxAngle;
+    } else {
+        rotateAngle = turnAngle;
+    }
+    Coords nextVelocity = this->getLastVelocity();
+    nextVelocity.rotate(rotateAngle);
+    updateLastVelocity(nextVelocity);
+    moveInDirection(nextVelocity);
+}
 
 
 
