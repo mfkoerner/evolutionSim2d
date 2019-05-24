@@ -129,6 +129,7 @@ struct Coords {
     void move(Coords mover);
     void toUnitVector();
     void resizeVector(double size);
+    void rotate(double angle);
 
 
     // getters
